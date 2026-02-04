@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import localFont from "next/font/local"; // 1. localFont 불러오기
+import "@/shared/styles/globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
+// 2. 로컬 폰트 설정
+const myLocalFont = localFont({
+	src: [
+		{
+			path: "../shared/assets/fonts/PretendardVariable.woff2",
+			weight: "400",
+			style: "normal",
+		},
+		{
+			path: "../shared/assets/fonts/PretendardVariable.woff2",
+			weight: "700",
+			style: "normal",
+		},
+	],
+	variable: "--font-local", // CSS 변수명
+	display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -24,9 +32,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="ko">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
+			{/* 3. className에 폰트 변수 추가 */}
+			<body className={`${myLocalFont.variable} font-sans antialiased`}>
 				{children}
 			</body>
 		</html>
