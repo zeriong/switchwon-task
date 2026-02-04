@@ -1,0 +1,21 @@
+@theme {
+  --font-pretendard: var(--font-local), "Pretendard Variable", Pretendard, sans-serif;
+
+  --color-pr-gray-0: #F7F8F9;
+  --color-pr-gray-100: #F1F2F4;
+  --color-pr-gray-300: #D0D6DB;
+  --color-pr-gray-400: #8899AA;
+  --color-pr-gray-500: #ACB4BB;
+  --color-pr-gray-600: #646F7C;
+  --color-pr-gray-700: #374553;
+  --color-pr-gray-800: #28323C;
+
+  --color-pr-blue-500: #3479EB;
+  --color-pr-sell-disabled-blue: #9DB6FF;
+
+  --color-pr-default-red: #FE5050;
+  --color-pr-buy-disabled-red: #FFA7A7;
+
+  --color-cta-1-default: #1B2334;
+  --color-cta-1-hover: #36414C;
+}

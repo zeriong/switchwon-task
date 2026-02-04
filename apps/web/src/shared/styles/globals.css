@@ -1,7 +1,8 @@
 @import "tailwindcss";
- 
+@import "@repo/tailwind-theme";
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard" sans-serif;
+  line-height: 1.33;
 }

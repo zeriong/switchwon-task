@@ -1,7 +1,7 @@
 export default function Home() {
-	return (
-		<div className="">
-			<main className="">헬로 워루두</main>
-		</div>
-	);
+  return (
+    <div className="text-[40px] font-[700] text-pr-blue-500">
+      <main className="">환율정보</main>
+    </div>
+  );
 }
