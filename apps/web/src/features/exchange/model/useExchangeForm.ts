@@ -15,23 +15,11 @@ import { useToastStore } from "@/shared/store/toastStore";
 import type { TabMode, Currency } from "./exchange.types";
 import { TOAST_MESSAGES, ERROR_MESSAGES } from "@/shared/constants/messages";
 import { API_CONFIG } from "@/shared/constants/config";
+import { getApiError } from "@/shared/lib/apiError";
+import { formatNumberWithCommas } from "@/shared/lib/formatters";
 
 interface FormValues {
 	amount: string;
-}
-
-// API 에러 정보 추출 헬퍼
-function getApiError(error: Error): {
-	code?: string;
-	message?: string;
-} {
-	const err = error as Error & {
-		response?: { data?: { code?: string; message?: string } };
-	};
-	return {
-		code: err.response?.data?.code,
-		message: err.response?.data?.message,
-	};
 }
 
 // 환전 폼 로직 훅
@@ -153,17 +141,7 @@ export function useExchangeForm() {
 	};
 
 	// 포맷된 금액 (천 단위 구분자)
-	const formattedAmount = useMemo(() => {
-		if (!amount) return "";
-		const num = Number(amount);
-		if (Number.isNaN(num)) return amount;
-		// 소수점이 있는 경우 처리
-		if (amount.includes(".")) {
-			const [integer, decimal] = amount.split(".");
-			return `${Number(integer).toLocaleString()}.${decimal}`;
-		}
-		return num.toLocaleString();
-	}, [amount]);
+	const formattedAmount = formatNumberWithCommas(amount || "");
 
 	// 실시간 원화 계산 (현재 환율 기준, 즉시 반영)
 	const calculatedKrwAmount = useMemo(() => {

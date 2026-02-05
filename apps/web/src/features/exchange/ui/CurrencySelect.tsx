@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Currency } from "../model/exchange.types";
 import { twMerge } from "tailwind-merge";
 import { CURRENCY_OPTIONS } from "@/shared/constants/currencies";
+import { useClickOutside } from "@/shared/lib/useClickOutside";
 
 interface CurrencySelectProps {
 	value: Currency;
@@ -22,19 +23,8 @@ export default function CurrencySelect({
 	const selectedOption = CURRENCY_OPTIONS.find((opt) => opt.value === value);
 
 	// 외부 클릭 시 닫기
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
-				setIsOpen(false);
-			}
-		};
-
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, []);
+	const closeDropdown = useCallback(() => setIsOpen(false), []);
+	useClickOutside(containerRef, closeDropdown);
 
 	const handleSelect = (currency: Currency) => {
 		onChange(currency);
