@@ -7,6 +7,22 @@ import { Pagination } from "@repo/ui/Pagination";
 import { useOrderHistory } from "@/features/exchange/model/exchange.queries";
 import { PAGINATION_CONFIG, DATE_FORMATS } from "@/shared/constants/config";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
+import type { OrderHistory } from "@/features/exchange/model/exchange.types";
+
+/**
+ * 주문 내역에서 매수/매도 금액을 계산
+ * - fromCurrency가 KRW면 외화 매수 (KRW → 외화)
+ * - fromCurrency가 외화면 외화 매도 (외화 → KRW)
+ */
+function getOrderDisplayData(order: OrderHistory) {
+	const isBuyingForex = order.fromCurrency === "KRW";
+
+	return {
+		buyAmount: isBuyingForex ? order.toAmount : order.fromAmount,
+		buyCurrency: isBuyingForex ? order.toCurrency : order.fromCurrency,
+		sellAmount: isBuyingForex ? order.fromAmount : order.toAmount,
+	};
+}
 
 export default function HistoryTable() {
 	const { data: history, isLoading } = useOrderHistory();
@@ -65,17 +81,8 @@ export default function HistoryTable() {
 					</thead>
 					<tbody>
 						{paginatedData.map((order) => {
-							// fromCurrency가 KRW면 외화 매수, 아니면 외화 매도
-							const isBuyingForex = order.fromCurrency === "KRW";
-							const buyAmount = isBuyingForex
-								? order.toAmount
-								: order.fromAmount;
-							const buyCurrency = isBuyingForex
-								? order.toCurrency
-								: order.fromCurrency;
-							const sellAmount = isBuyingForex
-								? order.fromAmount
-								: order.toAmount;
+							const { buyAmount, buyCurrency, sellAmount } =
+								getOrderDisplayData(order);
 
 							return (
 								<tr
