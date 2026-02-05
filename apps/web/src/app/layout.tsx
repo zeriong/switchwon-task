@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/shared/styles/globals.css";
 import QueryProvider from "@/providers/QueryProvider";
+import Toast from "@/shared/ui/Toast";
 
 const pretendard = localFont({
   src: [
@@ -29,7 +30,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} font-pretendard antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Toast />
+        </QueryProvider>
       </body>
     </html>
   );
