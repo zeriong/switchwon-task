@@ -1,135 +1,142 @@
-# Turborepo starter
+## 🚀 시작하기
 
-This Turborepo starter is maintained by the Turborepo core team.
+### 설치 및 실행행
 
-## Using this example
+```bash
+# 패키지 설치
+pnpm install
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
+# dev 실행
+pnpm dev
 ```
 
-## What's inside?
+pnpm dev 이후 [http://localhost:3000](http://localhost:3000)으로 접속가능합니다.
 
-This Turborepo includes the following packages/apps:
+<br>
 
-### Apps and Packages
+## 🎯 프로젝트 목표
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+**실제 프로덕션 레벨의 코드 품질**과 **확장 가능하고 함께하기 좋은 아키텍처**를 목표로 개발했습니다.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### 핵심 목표
 
-### Utilities
+1. **FSD(Feature-Sliced Design) 아키텍처** 적용으로 확장성 있고 충돌에 안전한 코드 구조 설계
+2. **모노레포(Turborepo)** 환경에서의 패키지 분리 및 공통화
+3. **사용자 경험(UX)** 중심의 인터랙션 설계
+4. **클린 코드** 원칙을 준수한 유지보수하기 쉬운 코드 작성
 
-This Turborepo has some additional tools already setup for you:
+<br>
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## ✨ 추가 구현 사항
 
-### Build
+### 1. 실시간 환율 폴링 및 자동 갱신
 
-To build all apps and packages, run the following command:
+**접근 방식**
+- 환율은 실시간으로 변동하는 데이터이므로, 5초 간격의 폴링을 적용했습니다.
+- React Query의 `refetchInterval` 옵션을 활용하여 자동으로 최신 환율을 가져옵니다.
+- 환율이 변경되면 관련 데이터(지갑, 견적)도 자동으로 재계산됩니다.
 
-```
-cd my-turborepo
+**결과**
+- 사용자는 항상 최신 환율 정보를 확인할 수 있습니다.
+- 환율 변동에 따른 총 보유 자산도 실시간으로 업데이트됩니다.
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
+### 2. 실수 방지를 위한 버튼 비활성화 로직
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
+**접근 방식**
+- 다양한 조건을 검사하여 환전 버튼의 활성화 상태를 결정합니다:
+  - 금액 미입력 시 비활성화
+  - 견적 조회 중 비활성화
+  - 잔액 부족 시 "잔액 부족" 텍스트로 변경 및 비활성화
+  - 환전 처리 중 로딩 상태 표시
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+**결과**
+- 불가능한 거래 시도를 사전에 차단하여 사용자 경험을 개선했습니다.
+- 버튼 텍스트만으로 현재 상태를 파악할 수 있습니다.
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### 3. 환율 변경 감지 및 에러 처리
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+**접근 방식**
+- 환전 실행 시 서버에서 `EXCHANGE_RATE_MISMATCH` 에러가 발생하면, 사용자에게 환율 변경을 알립니다.
+- 자동으로 최신 환율과 견적을 다시 조회합니다.
+- 인라인 에러 메시지로 명확한 피드백을 제공합니다.
 
-### Develop
+**결과**
+- 실시간 환율 변동 환경에서도 안정적인 거래가 가능합니다.
+- 사용자는 변경된 환율을 확인 후 재시도할 수 있습니다.
 
-To develop all apps and packages, run the following command:
+### 4. 반응형 디자인
 
-```
-cd my-turborepo
+**접근 방식**
+- Tailwind CSS의 반응형 유틸리티를 활용한 모바일 퍼스트 설계
+- 브레이크포인트별 레이아웃 조정
+- 터치 친화적인 버튼 크기와 간격
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+**결과**
+- 모바일, 태블릿, 데스크톱 모든 환경에서 최적화된 UI를 제공합니다.
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+### 5. 페이지 전환 시 스크롤 초기화
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+**접근 방식**
+- `ScrollToTop` 컴포넌트로 라우트 변경 감지
+- 페이지 전환 시 자동으로 상단으로 스크롤
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+**결과**
+- SPA 특성상 발생할 수 있는 스크롤 위치 유지 문제를 해결했습니다.
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+### 6. Toast 알림 시스템
 
-### Remote Caching
+**접근 방식**
+- Zustand를 활용한 전역 Toast 상태 관리
+- 성공/에러/정보 타입별 스타일 분리
+- 3초 후 자동 숨김, 연속 호출 시 이전 타이머 정리로 메모리 누수 방지
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+**결과**
+- 일관된 피드백 시스템으로 사용자에게 작업 결과를 명확히 전달합니다.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+<br>
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 📁 프로젝트 구조 (FSD 아키텍처)
 
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+apps/web/src/
+├── app/                    # App Router 라우팅
+│   ├── (main)/            # 인증 필요 페이지 그룹
+│   │   ├── page.tsx       # 환전 페이지
+│   │   └── history/       # 환전 내역 페이지
+│   └── login/             # 로그인 페이지
+├── features/              # 기능 단위 모듈
+│   ├── auth/              # 인증 기능
+│   ├── exchange/          # 환전 기능
+│   └── history/           # 내역 조회 기능
+├── shared/                # 공유 리소스
+│   ├── constants/         # 상수 정의
+│   ├── lib/               # 유틸리티 함수
+│   ├── ui/                # 공통 UI 컴포넌트
+│   └── store/             # 전역 상태
+├── widgets/               # 조합형 컴포넌트
+└── providers/             # Context Providers
 ```
 
-## Useful Links
+<br>
 
-Learn more about the power of Turborepo:
+## 🔍 회고 및 배운 점
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+### 모노레포 경험
+
+이번 프로젝트를 통해 **Turborepo 기반의 모노레포 환경**을 처음 구축해볼 수 있었습니다. 평소 사내에 모노레포 도입을 고민하고 있었는데, 이번 기회에 직접 경험하면서 패키지 분리와 공유 설정 관리의 장점을 체감할 수 있었습니다. 특히 `@repo/ui`, `@repo/tailwind-config` 등 공통 패키지를 분리하면서 **재사용성과 일관성**에 대해 더 깊이 고민하게 되었습니다.
+
+### FSD 아키텍처의 이해
+
+Feature-Sliced Design 아키텍처를 적용하면서 **관심사 분리**와 **모듈 간 의존성 관리**에 대해 더 깊게 배웠습니다. 처음에는 디렉토리 구조가 복잡하게 느껴졌지만, feature 단위로 코드를 분리하고 Public API(index.ts)를 통해 캡슐화하니 코드의 흐름이 명확해졌습니다.
+
+대규모 서비스에서 여러 팀이 각자의 feature를 담당할 때, 이러한 구조가 **충돌 없는 협업**에 큰 도움이 될 것 같습니다. 앞으로 실무에서도 이 경험을 바탕으로 더 나은 아키텍처 설계에 기여할 수 있을 것 같아 뿌듯합니다.
+
+### 공통화에 대한 고민
+
+상수, 유틸리티, UI 컴포넌트를 공통화하는 과정에서 **"어디까지 추상화할 것인가"**에 대해 많이 고민했습니다. 과도한 추상화는 오히려 복잡성을 높일 수 있기에, 실제로 2번 이상 사용되는 로직만 추출하는 원칙을 세웠습니다. 이 과정에서 DRY 원칙과 YAGNI 원칙 사이의 균형을 찾는 법을 더 알게된 것 같습니다.
+
+### 마무리
+
+이번 과제를 통해 기술적으로도, 사고방식으로도 한 단계 성장할 수 있었습니다. 단순히 동작하는 코드가 아닌, **함께 읽기 좋고 같이 유지보수하기 좋은 코드**를 작성하는 것에 대한 필요성과 중요성을 배워가는 시간이었습니다.
+
+좋은 기회를 주셔서 감사합니다. 앞으로도 함께 성장하며 더 좋은 서비스를 만들어갈 수 있기를 기대합니다! 🚀
