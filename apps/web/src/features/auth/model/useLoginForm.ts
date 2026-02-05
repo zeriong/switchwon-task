@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { login } from "../api/auth.api";
+import { loginAction } from "../api/auth.actions";
 import { useToastStore } from "@/shared/store/toastStore";
 
 // 로그인 폼 유효성 검사 스키마
@@ -29,17 +29,16 @@ export function useLoginForm() {
 	});
 
 	const onSubmit = async (data: LoginFormValues) => {
-		try {
-			const response = await login(data.email);
+		const result = await loginAction(data.email);
 
+		if (result.success && result.token) {
 			// 쿠키에 토큰 저장 (1일 유효)
-			Cookies.set("accessToken", response.token, { expires: 1 });
+			Cookies.set("accessToken", result.token, { expires: 1 });
 
 			showToast("로그인에 성공했습니다.", "success");
 			router.push("/");
-		} catch (error) {
-			console.error(error);
-			showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
+		} else {
+			showToast(result.error || "로그인에 실패했습니다.", "error");
 		}
 	};
 

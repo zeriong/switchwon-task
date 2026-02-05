@@ -9,7 +9,7 @@ export default function ExchangePage() {
 			<h2 className="text-xl md:text-[40px] font-bold text-pr-gray-800 mb-2">
 				환율 정보
 			</h2>
-			<p className="text-sm md:text-base text-pr-gray-700 mb-4 md:mb-6">
+			<p className="text-sm md:text-base text-pr-gray-700 mb-4 md:mb-10">
 				실시간 환율을 확인하고 간편하게 환전하세요.
 			</p>
 

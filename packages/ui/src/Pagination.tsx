@@ -33,7 +33,7 @@ export function Pagination({
 				type="button"
 				onClick={() => onPageChange(Math.max(1, currentPage - 1))}
 				disabled={currentPage === 1}
-				className="px-3 py-2 text-sm text-pr-gray-600 hover:bg-pr-gray-100 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+				className="px-3 py-2 text-sm text-pr-gray-600 hover:bg-pr-gray-100 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
 			>
 				이전
 			</button>
@@ -48,7 +48,7 @@ export function Pagination({
 						"w-9 h-9 text-sm rounded-lg transition-colors",
 						currentPage === page
 							? "bg-pr-blue-500 text-white"
-							: "text-pr-gray-600 hover:bg-pr-gray-100",
+							: "text-pr-gray-600 hover:bg-pr-gray-100 cursor-pointer",
 					)}
 				>
 					{page}
@@ -60,7 +60,7 @@ export function Pagination({
 				type="button"
 				onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
 				disabled={currentPage === totalPages}
-				className="px-3 py-2 text-sm text-pr-gray-600 hover:bg-pr-gray-100 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+				className="px-3 py-2 text-sm text-pr-gray-600 hover:bg-pr-gray-100 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
 			>
 				다음
 			</button>
