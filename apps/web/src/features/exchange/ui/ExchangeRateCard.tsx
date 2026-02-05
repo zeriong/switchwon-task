@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { Box } from "@repo/ui/Box";
-import { Spinner } from "@repo/ui/assets/icons/Spinner";
 import { useExchangeRates } from "../model/exchange.queries";
 import upRedSvg from "@/shared/assets/svg/up_red.svg";
 import downBlueSvg from "@/shared/assets/svg/down_blue.svg";
 import { CURRENCY_INFO } from "@/shared/constants/currencies";
+import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 
 // 환율 정보 카드 컴포넌트
 export default function ExchangeRateCard() {
@@ -14,11 +14,8 @@ export default function ExchangeRateCard() {
 
 	return (
 		<section>
-			{/* 환율 카드 목록 */}
 			{isLoading ? (
-				<div className="flex justify-center py-8">
-					<Spinner color="#3479EB" />
-				</div>
+				<LoadingSpinner />
 			) : (
 				<div className="grid grid-cols-2 gap-3 md:gap-4">
 					{rates?.map((rate) => {

@@ -1,9 +1,9 @@
 "use client";
 
 import { Box } from "@repo/ui/Box";
-import { Spinner } from "@repo/ui/assets/icons/Spinner";
 import { useWallet } from "../model/exchange.queries";
 import { CURRENCY_SYMBOLS } from "@/shared/constants/currencies";
+import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 
 // 지갑 카드 컴포넌트
 export default function WalletCard() {
@@ -11,14 +11,11 @@ export default function WalletCard() {
 
 	if (isLoading) {
 		return (
-			<Box as="section" className="mt-4 md:mt-6 bg-pr-gray-0 grow">
-				<h3 className="text-lg md:text-xl font-bold text-pr-gray-800 mb-4">
-					내 지갑
-				</h3>
-				<div className="flex justify-center py-8">
-					<Spinner color="#3479EB" />
-				</div>
-			</Box>
+			<LoadingSpinner
+				withBox
+				title="내 지갑"
+				className="mt-4 md:mt-6 bg-pr-gray-0 grow"
+			/>
 		);
 	}
 
