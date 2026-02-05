@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "@/shared/styles/globals.css";
 import QueryProvider from "@/providers/QueryProvider";
 import Toast from "@/shared/ui/Toast";
+import ScrollToTop from "@/shared/ui/ScrollToTop";
 
 const pretendard = localFont({
   src: [
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.variable} font-pretendard antialiased`}>
         <QueryProvider>
+          <ScrollToTop />
           {children}
           <Toast />
         </QueryProvider>
