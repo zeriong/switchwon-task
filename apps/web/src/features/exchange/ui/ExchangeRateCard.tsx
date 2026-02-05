@@ -6,6 +6,8 @@ import { Spinner } from "@repo/ui/assets/icons/Spinner";
 import { useExchangeRates } from "../model/exchange.queries";
 import usdSvg from "@/shared/assets/svg/usd.svg";
 import jpySvg from "@/shared/assets/svg/jpy.svg";
+import upRedSvg from "@/shared/assets/svg/up_red.svg";
+import downBlueSvg from "@/shared/assets/svg/down_blue.svg";
 
 const currencyInfo = {
 	USD: { icon: usdSvg, name: "미국 달러" },
@@ -18,14 +20,6 @@ export default function ExchangeRateCard() {
 
 	return (
 		<section>
-			{/* 제목 */}
-			<h2 className="text-xl md:text-2xl font-bold text-pr-gray-800 mb-2">
-				환율 정보
-			</h2>
-			<p className="text-sm md:text-base text-pr-gray-500 mb-4 md:mb-6">
-				실시간 환율을 확인하고 간편하게 환전하세요.
-			</p>
-
 			{/* 환율 카드 목록 */}
 			{isLoading ? (
 				<div className="flex justify-center py-8">
@@ -52,7 +46,7 @@ export default function ExchangeRateCard() {
 											{rate.currency}
 										</span>
 									</div>
-									<span className="text-xs md:text-sm text-pr-gray-500">
+									<span className="text-xs md:text-sm text-pr-gray-600">
 										{info.name}
 									</span>
 								</div>
@@ -66,7 +60,13 @@ export default function ExchangeRateCard() {
 										isPositive ? "text-pr-default-red" : "text-pr-blue-500"
 									}`}
 								>
-									<span>{isPositive ? "▲" : "▼"}</span>
+									<Image
+										src={isPositive ? upRedSvg : downBlueSvg}
+										alt={isPositive ? "up" : "down"}
+										width={12}
+										height={12}
+										className="w-3 h-3"
+									/>
 									<span>
 										{isPositive ? "+" : ""}
 										{rate.changePercentage}%

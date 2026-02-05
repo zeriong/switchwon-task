@@ -9,7 +9,7 @@ export default function Toast() {
 
 	const typeStyles = {
 		success: "bg-cta-1-default text-white",
-		error: "bg-pr-default-red text-white",
+		error: "bg-pr-default-red/90 text-white",
 		info: "bg-pr-blue-500 text-white",
 	};
 
