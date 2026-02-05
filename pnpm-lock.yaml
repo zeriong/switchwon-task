@@ -60,6 +60,12 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11(@types/react@19.2.2)(react@19.2.3)
     devDependencies:
+      '@repo/biome-config':
+        specifier: workspace:*
+        version: link:../../packages/biome-config
+      '@repo/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       '@repo/tailwind-theme':
         specifier: workspace:*
         version: link:../../packages/tailwind-theme
@@ -91,6 +97,18 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  packages/biome-config:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.8.3
+        version: 1.8.3
+
+  packages/tailwind-config:
+    devDependencies:
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.1.18
+
   packages/tailwind-theme:
     devDependencies:
       tailwindcss:
@@ -101,12 +119,18 @@ importers:
 
   packages/ui:
     dependencies:
+      next:
+        specifier: '>=14.0.0'
+        version: 16.1.6(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.2.0
         version: 19.2.0
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      tailwind-merge:
+        specifier: ^3.4.0
+        version: 3.4.0
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
@@ -1995,6 +2019,31 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
+  next@16.1.6(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+    dependencies:
+      '@next/env': 16.1.6
+      '@swc/helpers': 0.5.15
+      baseline-browser-mapping: 2.9.11
+      caniuse-lite: 1.0.30001761
+      postcss: 8.4.31
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      styled-jsx: 5.1.6(react@19.2.0)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 16.1.6
+      '@next/swc-darwin-x64': 16.1.6
+      '@next/swc-linux-arm64-gnu': 16.1.6
+      '@next/swc-linux-arm64-musl': 16.1.6
+      '@next/swc-linux-x64-gnu': 16.1.6
+      '@next/swc-linux-x64-musl': 16.1.6
+      '@next/swc-win32-arm64-msvc': 16.1.6
+      '@next/swc-win32-x64-msvc': 16.1.6
+      babel-plugin-react-compiler: 1.0.0
+      sharp: 0.34.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
   next@16.1.6(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@next/env': 16.1.6
@@ -2131,6 +2180,11 @@ snapshots:
   source-map-js@1.2.1: {}
 
   strip-json-comments@3.1.1: {}
+
+  styled-jsx@5.1.6(react@19.2.0):
+    dependencies:
+      client-only: 0.0.1
+      react: 19.2.0
 
   styled-jsx@5.1.6(react@19.2.3):
     dependencies:

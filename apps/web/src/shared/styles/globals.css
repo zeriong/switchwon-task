@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "@repo/tailwind-theme";
 
+@config "../../../tailwind.config.ts";
+
 body {
   background: var(--background);
   color: var(--foreground);
