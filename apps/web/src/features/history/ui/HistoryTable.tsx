@@ -4,10 +4,8 @@ import { useState, useMemo } from "react";
 import { format } from "date-fns";
 import { Box } from "@repo/ui/Box";
 import { Pagination } from "@repo/ui/Pagination";
-import { useOrderHistory } from "@/features/exchange/model/exchange.queries";
-import { PAGINATION_CONFIG, DATE_FORMATS } from "@/shared/constants/config";
-import { EMPTY_MESSAGES } from "@/shared/constants/messages";
-import type { OrderHistory } from "@/features/exchange/model/exchange.types";
+import { useOrderHistory, type OrderHistory } from "@/features/exchange";
+import { PAGINATION_CONFIG, DATE_FORMATS, EMPTY_MESSAGES } from "@/shared/constants";
 
 /**
  * 주문 내역에서 매수/매도 금액을 계산

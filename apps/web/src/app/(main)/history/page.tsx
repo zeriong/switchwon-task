@@ -1,5 +1,5 @@
-import HistoryTable from "@/features/history/ui/HistoryTable";
-import PageHeader from "@/shared/ui/PageHeader";
+import { HistoryTable } from "@/features/history";
+import { PageHeader } from "@/shared/ui";
 
 export default function HistoryPage() {
 	return (

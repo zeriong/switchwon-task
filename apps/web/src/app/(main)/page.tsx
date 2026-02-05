@@ -1,7 +1,9 @@
-import ExchangeRateCard from "@/features/exchange/ui/ExchangeRateCard";
-import WalletCard from "@/features/exchange/ui/WalletCard";
-import ExchangeForm from "@/features/exchange/ui/ExchangeForm";
-import PageHeader from "@/shared/ui/PageHeader";
+import {
+	ExchangeRateCard,
+	WalletCard,
+	ExchangeForm,
+} from "@/features/exchange";
+import { PageHeader } from "@/shared/ui";
 
 export default function ExchangePage() {
 	return (

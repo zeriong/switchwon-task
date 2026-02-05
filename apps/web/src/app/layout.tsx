@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/shared/styles/globals.css";
 import QueryProvider from "@/providers/QueryProvider";
-import Toast from "@/shared/ui/Toast";
-import ScrollToTop from "@/shared/ui/ScrollToTop";
+import { Toast, ScrollToTop } from "@/shared/ui";
 
 const pretendard = localFont({
   src: [
