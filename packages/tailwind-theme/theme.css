@@ -3,12 +3,15 @@
 
   --color-pr-gray-0: #F7F8F9;
   --color-pr-gray-100: #F1F2F4;
+  --color-pr-gray-200: #E9EBEE;
   --color-pr-gray-300: #D0D6DB;
   --color-pr-gray-400: #8899AA;
   --color-pr-gray-500: #ACB4BB;
   --color-pr-gray-600: #646F7C;
   --color-pr-gray-700: #374553;
   --color-pr-gray-800: #28323C;
+
+  --color-pr-divider-gray: #C5C8CE;
 
   --color-pr-blue-500: #3479EB;
   --color-pr-sell-disabled-blue: #9DB6FF;

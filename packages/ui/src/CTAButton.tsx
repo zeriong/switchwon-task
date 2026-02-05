@@ -40,9 +40,9 @@ export function CTAButton({
 			onClick={isDisabled ? undefined : onClick}
 			className={twMerge(
 				"flex justify-center items-center gap-2.5 self-stretch",
-				"w-full py-6 px-2.5 rounded-xl",
+				"w-full py-4 lg:py-6 px-2.5 rounded-xl",
 				"bg-cta-1-default hover:bg-cta-1-hover",
-				"text-white text-[22px] font-semibold",
+				"text-white text-[18px] lg:text-[22px] font-semibold",
 				"transition-colors cursor-pointer",
 				"disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none",
 				className,
