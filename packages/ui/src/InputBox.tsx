@@ -36,7 +36,7 @@ export function InputBox({
 				readOnly={readOnly}
 				className={twMerge(
 					"flex-1 w-full h-full bg-transparent text-pr-gray-800",
-					"text-base outline-none placeholder:text-pr-gray-400",
+					"text-[20px] outline-none placeholder:text-pr-gray-400",
 					className,
 				)}
 			/>

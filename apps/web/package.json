@@ -7,11 +7,12 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "biome lint .",
-		"format": "biome format --write .",
+		"lint": "biome lint ./src",
+		"format": "biome format --write ./src",
 		"check-types": "next typegen && tsc --noEmit"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^5.2.2",
 		"@repo/ui": "workspace:*",
 		"@tanstack/react-query": "^5.90.20",
 		"@tanstack/react-query-devtools": "^5.91.3",

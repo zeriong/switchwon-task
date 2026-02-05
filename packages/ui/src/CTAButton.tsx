@@ -42,7 +42,7 @@ export function CTAButton({
 				"flex justify-center items-center gap-2.5 self-stretch",
 				"w-full py-6 px-2.5 rounded-xl",
 				"bg-cta-1-default hover:bg-cta-1-hover",
-				"text-white text-base font-semibold",
+				"text-white text-[22px] font-semibold",
 				"transition-colors cursor-pointer",
 				"disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none",
 				className,
