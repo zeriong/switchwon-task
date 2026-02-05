@@ -1,15 +1,12 @@
-import {
-	useQuery,
-	useMutation,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
 	getExchangeRates,
 	getWallet,
 	getOrderHistory,
 	requestExchange,
 } from "../api/exchange.api";
-import type { OrderRequest } from "./exchange.types";
+import type { ExchangeRate, OrderRequest } from "./exchange.types";
 
 // Query Key 상수화
 export const QUERY_KEYS = {
@@ -19,15 +16,50 @@ export const QUERY_KEYS = {
 	QUOTE: ["quote"] as const,
 };
 
-// 환율 조회 (60초 폴링)
+// 환율 조회 (5초 폴링) - 환율 변경 시 관련 쿼리 무효화
 export const useExchangeRates = () => {
-	return useQuery({
+	const queryClient = useQueryClient();
+	const prevRatesRef = useRef<ExchangeRate[] | null>(null);
+
+	const query = useQuery({
 		queryKey: QUERY_KEYS.RATES,
 		queryFn: getExchangeRates,
-		refetchInterval: 60000,
+		refetchInterval: 5000,
 		staleTime: 30000,
 	});
+
+	// 환율 변경 감지 시 관련 쿼리 무효화
+	useEffect(() => {
+		if (!query.data) return;
+
+		const prevRates = prevRatesRef.current;
+		const currentRates = query.data;
+
+		// 첫 로드가 아니고, 환율이 실제로 변경된 경우에만 무효화
+		if (prevRates && hasRatesChanged(prevRates, currentRates)) {
+			// 지갑 재조회 (총 보유 자산 재계산)
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WALLET });
+			// 견적 재조회 (필요 원화 재계산)
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.QUOTE });
+		}
+
+		prevRatesRef.current = currentRates;
+	}, [query.data, queryClient]);
+
+	return query;
 };
+
+// 환율 변경 여부 확인
+function hasRatesChanged(
+	prev: ExchangeRate[],
+	current: ExchangeRate[],
+): boolean {
+	if (prev.length !== current.length) return true;
+	return prev.some((prevRate) => {
+		const currRate = current.find((r) => r.currency === prevRate.currency);
+		return !currRate || currRate.rate !== prevRate.rate;
+	});
+}
 
 // 지갑 잔액 조회
 export const useWallet = () => {
