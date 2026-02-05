@@ -50,15 +50,20 @@ export const useExchangeRates = () => {
 	return query;
 };
 
-// 환율 변경 여부 확인
+// 환율 변경 여부 확인 (Map을 사용하여 O(n) 복잡도로 최적화)
 function hasRatesChanged(
 	prev: ExchangeRate[],
 	current: ExchangeRate[],
 ): boolean {
 	if (prev.length !== current.length) return true;
+
+	const currentRateMap = new Map(
+		current.map((rate) => [rate.currency, rate.rate]),
+	);
+
 	return prev.some((prevRate) => {
-		const currRate = current.find((r) => r.currency === prevRate.currency);
-		return !currRate || currRate.rate !== prevRate.rate;
+		const currentRate = currentRateMap.get(prevRate.currency);
+		return currentRate === undefined || currentRate !== prevRate.rate;
 	});
 }
 
