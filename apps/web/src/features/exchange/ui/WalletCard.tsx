@@ -3,13 +3,7 @@
 import { Box } from "@repo/ui/Box";
 import { Spinner } from "@repo/ui/assets/icons/Spinner";
 import { useWallet } from "../model/exchange.queries";
-
-// 통화별 기호
-const currencySymbol: Record<string, string> = {
-	KRW: "₩",
-	USD: "$",
-	JPY: "¥",
-};
+import { CURRENCY_SYMBOLS } from "@/shared/constants/currencies";
 
 // 지갑 카드 컴포넌트
 export default function WalletCard() {
@@ -48,7 +42,7 @@ export default function WalletCard() {
 							{item.currency}
 						</span>
 						<span className="text-sm md:text-[20px] font-semibold text-pr-gray-600">
-							{currencySymbol[item.currency]} {item.balance.toLocaleString()}
+							{CURRENCY_SYMBOLS[item.currency]} {item.balance.toLocaleString()}
 						</span>
 					</div>
 				))}

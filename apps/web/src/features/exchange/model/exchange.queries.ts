@@ -7,6 +7,7 @@ import {
 	requestExchange,
 } from "../api/exchange.api";
 import type { ExchangeRate, OrderRequest } from "./exchange.types";
+import { API_CONFIG } from "@/shared/constants/config";
 
 // Query Key 상수화
 export const QUERY_KEYS = {
@@ -24,8 +25,8 @@ export const useExchangeRates = () => {
 	const query = useQuery({
 		queryKey: QUERY_KEYS.RATES,
 		queryFn: getExchangeRates,
-		refetchInterval: 5000,
-		staleTime: 30000,
+		refetchInterval: API_CONFIG.EXCHANGE_RATE_POLL_INTERVAL,
+		staleTime: API_CONFIG.EXCHANGE_RATE_STALE_TIME,
 	});
 
 	// 환율 변경 감지 시 관련 쿼리 무효화
@@ -74,7 +75,7 @@ export const useOrderHistory = () => {
 	return useQuery({
 		queryKey: QUERY_KEYS.HISTORY,
 		queryFn: getOrderHistory,
-		staleTime: 60000,
+		staleTime: API_CONFIG.ORDER_HISTORY_STALE_TIME,
 	});
 };
 

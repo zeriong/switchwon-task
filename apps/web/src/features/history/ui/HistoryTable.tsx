@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import { Box } from "@repo/ui/Box";
 import { Pagination } from "@repo/ui/Pagination";
 import { useOrderHistory } from "@/features/exchange/model/exchange.queries";
-
-const PAGE_SIZE = 10;
+import { PAGINATION_CONFIG, DATE_FORMATS } from "@/shared/constants/config";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function HistoryTable() {
 	const { data: history, isLoading } = useOrderHistory();
@@ -16,21 +16,26 @@ export default function HistoryTable() {
 	const { paginatedData, totalPages } = useMemo(() => {
 		if (!history) return { paginatedData: [], totalPages: 0 };
 
-		const total = Math.ceil(history.length / PAGE_SIZE);
-		const startIndex = (currentPage - 1) * PAGE_SIZE;
-		const sliced = history.slice(startIndex, startIndex + PAGE_SIZE);
+		const pageSize = PAGINATION_CONFIG.PAGE_SIZE;
+		const total = Math.ceil(history.length / pageSize);
+		const startIndex = (currentPage - 1) * pageSize;
+		const sliced = history.slice(startIndex, startIndex + pageSize);
 
 		return { paginatedData: sliced, totalPages: total };
 	}, [history, currentPage]);
 
 	if (isLoading) {
-		return <Box className="p-8 text-center text-pr-gray-500">로딩 중...</Box>;
+		return (
+			<Box className="p-8 text-center text-pr-gray-500">
+				{EMPTY_MESSAGES.LOADING}
+			</Box>
+		);
 	}
 
 	if (!history || history.length === 0) {
 		return (
 			<Box className="p-8 text-center text-pr-gray-500">
-				환전 내역이 없습니다.
+				{EMPTY_MESSAGES.NO_HISTORY}
 			</Box>
 		);
 	}
@@ -81,7 +86,7 @@ export default function HistoryTable() {
 										{order.orderId}
 									</td>
 									<td className="px-6 py-5 text-sm text-pr-gray-700">
-										{format(new Date(order.orderedAt), "yyyy-MM-dd HH:mm:ss")}
+										{format(new Date(order.orderedAt), DATE_FORMATS.HISTORY)}
 									</td>
 									<td className="px-6 py-5 text-sm text-pr-gray-700 text-right">
 										{buyAmount.toLocaleString()} {buyCurrency}

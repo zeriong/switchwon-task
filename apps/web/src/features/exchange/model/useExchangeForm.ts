@@ -13,6 +13,8 @@ import { getQuote } from "../api/exchange.api";
 import { useDebounce } from "@/shared/lib/useDebounce";
 import { useToastStore } from "@/shared/store/toastStore";
 import type { TabMode, Currency } from "./exchange.types";
+import { TOAST_MESSAGES, ERROR_MESSAGES } from "@/shared/constants/messages";
+import { API_CONFIG } from "@/shared/constants/config";
 
 interface FormValues {
 	amount: string;
@@ -45,7 +47,7 @@ export function useExchangeForm() {
 	});
 
 	const amount = watch("amount");
-	const debouncedAmount = useDebounce(amount, 300);
+	const debouncedAmount = useDebounce(amount, API_CONFIG.INPUT_DEBOUNCE_TIME);
 
 	const { data: rates } = useExchangeRates();
 	const { data: wallet } = useWallet();
@@ -87,7 +89,7 @@ export function useExchangeForm() {
 	const onSubmit = (data: FormValues) => {
 		setErrorMessage("");
 		if (!currentRate) {
-			showToast("환율 정보를 불러오는 중입니다.", "info");
+			showToast(TOAST_MESSAGES.EXCHANGE.LOADING_RATES, "info");
 			return;
 		}
 
@@ -100,7 +102,7 @@ export function useExchangeForm() {
 			},
 			{
 				onSuccess: () => {
-					showToast("환전이 완료되었습니다!", "success");
+					showToast(TOAST_MESSAGES.EXCHANGE.SUCCESS, "success");
 					setValue("amount", "");
 					setErrorMessage("");
 				},
@@ -108,16 +110,15 @@ export function useExchangeForm() {
 					const { code, message } = getApiError(error);
 
 					if (code === "EXCHANGE_RATE_MISMATCH") {
-						setErrorMessage("환율이 변동되었습니다. 다시 확인해주세요.");
+						setErrorMessage(ERROR_MESSAGES.RATE_CHANGED);
 						queryClient.invalidateQueries({ queryKey: QUERY_KEYS.RATES });
 						queryClient.invalidateQueries({ queryKey: ["quote"] });
 					} else if (code === "WALLET_INSUFFICIENT_BALANCE") {
-						showToast("잔액이 부족합니다.", "error");
+						showToast(TOAST_MESSAGES.EXCHANGE.INSUFFICIENT_BALANCE, "error");
 					} else if (message) {
-						// API에서 제공하는 에러 메시지 표시
 						showToast(message, "error");
 					} else {
-						showToast("환전에 실패했습니다.", "error");
+						showToast(TOAST_MESSAGES.EXCHANGE.FAILURE, "error");
 					}
 				},
 			},

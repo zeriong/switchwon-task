@@ -4,20 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Currency } from "../model/exchange.types";
-import usdSvg from "@/shared/assets/svg/usd.svg";
-import jpySvg from "@/shared/assets/svg/jpy.svg";
 import { twMerge } from "tailwind-merge";
-
-interface CurrencyOption {
-	value: Currency;
-	label: string;
-	icon: string;
-}
-
-const currencyOptions: CurrencyOption[] = [
-	{ value: "USD", label: "미국 USD", icon: usdSvg },
-	{ value: "JPY", label: "일본 JPY", icon: jpySvg },
-];
+import { CURRENCY_OPTIONS } from "@/shared/constants/currencies";
 
 interface CurrencySelectProps {
 	value: Currency;
@@ -31,7 +19,7 @@ export default function CurrencySelect({
 	const [isOpen, setIsOpen] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const selectedOption = currencyOptions.find((opt) => opt.value === value);
+	const selectedOption = CURRENCY_OPTIONS.find((opt) => opt.value === value);
 
 	// 외부 클릭 시 닫기
 	useEffect(() => {
@@ -62,7 +50,7 @@ export default function CurrencySelect({
 				className="flex items-center gap-2 text-base md:text-lg font-bold text-pr-gray-800 bg-transparent cursor-pointer"
 			>
 				<Image
-					src={selectedOption?.icon || usdSvg}
+					src={selectedOption?.icon || CURRENCY_OPTIONS[0].icon}
 					alt={value}
 					width={24}
 					height={24}
@@ -96,7 +84,7 @@ export default function CurrencySelect({
 						transition={{ duration: 0.2 }}
 						className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-pr-gray-200 overflow-hidden z-50 min-w-[160px] py-2"
 					>
-						{currencyOptions.map((option) => (
+						{CURRENCY_OPTIONS.map((option) => (
 							<button
 								key={option.value}
 								type="button"

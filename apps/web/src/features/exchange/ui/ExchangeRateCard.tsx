@@ -4,15 +4,9 @@ import Image from "next/image";
 import { Box } from "@repo/ui/Box";
 import { Spinner } from "@repo/ui/assets/icons/Spinner";
 import { useExchangeRates } from "../model/exchange.queries";
-import usdSvg from "@/shared/assets/svg/usd.svg";
-import jpySvg from "@/shared/assets/svg/jpy.svg";
 import upRedSvg from "@/shared/assets/svg/up_red.svg";
 import downBlueSvg from "@/shared/assets/svg/down_blue.svg";
-
-const currencyInfo = {
-	USD: { icon: usdSvg, name: "미국 달러" },
-	JPY: { icon: jpySvg, name: "일본 엔화" },
-};
+import { CURRENCY_INFO } from "@/shared/constants/currencies";
 
 // 환율 정보 카드 컴포넌트
 export default function ExchangeRateCard() {
@@ -28,7 +22,7 @@ export default function ExchangeRateCard() {
 			) : (
 				<div className="grid grid-cols-2 gap-3 md:gap-4">
 					{rates?.map((rate) => {
-						const info = currencyInfo[rate.currency];
+						const info = CURRENCY_INFO[rate.currency];
 						const isPositive = rate.changePercentage > 0;
 
 						return (

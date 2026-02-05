@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { loginAction } from "../api/auth.actions";
 import { useToastStore } from "@/shared/store/toastStore";
+import { TOAST_MESSAGES } from "@/shared/constants/messages";
+import { AUTH_CONFIG } from "@/shared/constants/config";
 
 // 로그인 폼 유효성 검사 스키마
 const loginSchema = z.object({
@@ -32,13 +34,14 @@ export function useLoginForm() {
 		const result = await loginAction(data.email);
 
 		if (result.success && result.token) {
-			// 쿠키에 토큰 저장 (1일 유효)
-			Cookies.set("accessToken", result.token, { expires: 1 });
+			Cookies.set("accessToken", result.token, {
+				expires: AUTH_CONFIG.TOKEN_EXPIRY_DAYS,
+			});
 
-			showToast("로그인에 성공했습니다.", "success");
+			showToast(TOAST_MESSAGES.AUTH.LOGIN_SUCCESS, "success");
 			router.push("/");
 		} else {
-			showToast(result.error || "로그인에 실패했습니다.", "error");
+			showToast(result.error || TOAST_MESSAGES.AUTH.LOGIN_FAILURE, "error");
 		}
 	};
 
