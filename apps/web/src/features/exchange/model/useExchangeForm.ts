@@ -59,19 +59,24 @@ export function useExchangeForm() {
 		placeholderData: keepPreviousData,
 	});
 
-	// 잔액 부족 여부 확인
+	// 잔액 부족 여부 확인 (quoteData 없이도 실시간 환율 기반으로 체크)
 	const isInsufficientBalance = useMemo(() => {
-		if (!wallet || !quoteData || !amount || Number(amount) <= 0) return false;
+		if (!wallet || !amount || Number(amount) <= 0) return false;
+
+		const numAmount = Number(amount);
 
 		if (mode === "BUY") {
 			// 살래요: KRW 잔액이 필요 원화보다 적으면 잔액 부족
 			const krwWallet = wallet.wallets.find((w) => w.currency === "KRW");
-			return (krwWallet?.balance ?? 0) < quoteData.krwAmount;
+			const krwBalance = krwWallet?.balance ?? 0;
+			// quoteData가 있으면 서버 값 사용, 없으면 실시간 계산 값 사용
+			const requiredKrw = quoteData?.krwAmount ?? (currentRate ? Math.round(numAmount * currentRate.rate) : 0);
+			return requiredKrw > 0 && krwBalance < requiredKrw;
 		}
-		// 팔래요: 해당 통화 잔액이 입력 금액보다 적으면 잔액 부족
+		// 팔래요: 해당 통화 잔액이 입력 금액보다 적으면 보유 자산 부족
 		const currencyWallet = wallet.wallets.find((w) => w.currency === currency);
-		return (currencyWallet?.balance ?? 0) < Number(amount);
-	}, [wallet, quoteData, amount, mode, currency]);
+		return (currencyWallet?.balance ?? 0) < numAmount;
+	}, [wallet, quoteData, amount, mode, currency, currentRate]);
 
 	// 환전 실행
 	const onSubmit = (data: FormValues) => {
@@ -157,7 +162,11 @@ export function useExchangeForm() {
 		!quoteData ||
 		isQuoteFetching ||
 		isInsufficientBalance;
-	const buttonText = isInsufficientBalance ? "잔액 부족" : "환전하기";
+	const buttonText = isInsufficientBalance
+		? isBuy
+			? "잔액 부족"
+			: "보유 자산 부족"
+		: "환전하기";
 
 	return {
 		form: { handleSubmit },
